@@ -2,16 +2,21 @@ package com.techlab.productos;
 
 public class Producto {
     protected String nombre;
-    protected int id;
+    private static int contadorId=0;
+    private final int id;
     protected double precio;
     protected int cantStock;
 
-    public Producto() {
+
+    public Producto(String nombre,double precio,int cantStock) {
+
         this.nombre = nombre;
-        this.id = id;
+        this.id=contadorId++;
         this.precio = precio;
         this.cantStock = cantStock;
     }
+
+
 
     public String getNombre() {
         return nombre;
@@ -41,7 +46,5 @@ public class Producto {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+
 }
