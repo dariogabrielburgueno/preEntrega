@@ -5,9 +5,9 @@ import java.util.ArrayList;
 
 public class Inventario {
 
-    ArrayList<Alimento> listaAlimentos=new ArrayList<>();
-    ArrayList<Bebida> listaBebidas=new ArrayList<>();
-    ArrayList<Producto> listaProductos=new ArrayList<>();
+    private ArrayList<Alimento> listaAlimentos=new ArrayList<>();
+    private ArrayList<Bebida> listaBebidas=new ArrayList<>();
+    private ArrayList<Producto> listaProductos=new ArrayList<>();
 
     public void agregarBebida(Bebida bebida ){
         listaBebidas.add(bebida);
@@ -24,9 +24,37 @@ public class Inventario {
         System.out.println(producto.getNombre()+" agregado al inventario");
     }
 
+    public void eliminarDeInventario(Producto producto){
+        for (int e=0;e<listaProductos.size();e++ ){
+            if(listaProductos.get(e).getId()==producto.getId()){
+                listaProductos.remove(e);
+            }
+        }
+    }
 
+    public ArrayList<Producto> getListaProductos() {
+        return listaProductos;
+    }
 
+    public void setListaProductos(ArrayList<Producto> listaProductos) {
+        this.listaProductos = listaProductos;
+    }
 
+    public ArrayList<Bebida> getListaBebidas() {
+        return listaBebidas;
+    }
+
+    public void setListaBebidas(ArrayList<Bebida> listaBebidas) {
+        this.listaBebidas = listaBebidas;
+    }
+
+    public ArrayList<Alimento> getListaAlimentos() {
+        return listaAlimentos;
+    }
+
+    public void setListaAlimentos(ArrayList<Alimento> listaAlimentos) {
+        this.listaAlimentos = listaAlimentos;
+    }
 }
 
 

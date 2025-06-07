@@ -3,13 +3,14 @@ package com.techlab.menu;
 import com.techlab.productos.Alimento;
 import com.techlab.productos.Bebida;
 import com.techlab.productos.Inventario;
+import com.techlab.productos.Producto;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class menuManager {
 
-    static Scanner alimento = new Scanner(System.in);
+    static Scanner sc = new Scanner(System.in);
     Inventario inventario=new Inventario();
 
     public void empezarMenu(){
@@ -17,14 +18,14 @@ public class menuManager {
 
             try{
                 mostrarMenu();
-                int entrada= alimento.nextInt();
+                int entrada= sc.nextInt();
                 interactuarMenu(entrada);
 
             }
             catch(InputMismatchException e){
                 System.out.println("Ingrese un número con el teclado");
                 System.out.println("");
-                alimento.nextLine();
+                sc.nextLine();
             }
 
 
@@ -47,13 +48,13 @@ public class menuManager {
             case 1: agregarProducto();
 
                 break;
-            case 2: //listarProductos();
-                System.out.println("en proceso");
+            case 2: listarProductos();
+
                 break;
-            case 3: //buscarProducto();
-                System.out.println("en proceso");
+            case 3: buscarProducto();
+
                 break;
-            case 4: //eliminarProducto();
+            case 4: eliminarProducto();
                 System.out.println("en proceso");
                 break;
             case 5: //crearPedido();
@@ -72,19 +73,19 @@ public class menuManager {
     public void agregarProducto(){
         System.out.println("Ingrese 1 para agregar una bebida.");
         System.out.println("Ingrese 2 para agregar un alimento.");
-        int opcionP= alimento.nextInt();
+        int opcionP= sc.nextInt();
         if (opcionP==1){
 
-            alimento.nextLine();
+            sc.nextLine();
             Bebida bebida=new Bebida();
             System.out.println("Ingrese nombre de bebida: ");
-            bebida.setNombre(String.valueOf(alimento.nextLine()));
+            bebida.setNombre(String.valueOf(sc.nextLine()));
             System.out.println("Ingrese precio de la bebida: ");
-            bebida.setPrecio(Integer.parseInt(alimento.nextLine()));
+            bebida.setPrecio(Integer.parseInt(sc.nextLine()));
             System.out.println("Ingrese volumen de la bebida: ");
-            bebida.setVolumen(alimento.nextInt());
+            bebida.setVolumen(sc.nextInt());
             System.out.println("Ingrese cantidad de stock de la bebida: ");
-            bebida.setCantStock(alimento.nextInt());
+            bebida.setCantStock(sc.nextInt());
 
             inventario.agregarBebida(bebida);
             inventario.agregarAlInventario(bebida);
@@ -92,22 +93,53 @@ public class menuManager {
 
 
         }else if(opcionP==2){
-            alimento.nextLine();
+            sc.nextLine();
             Alimento alimento=new Alimento();
             System.out.println("Ingrese nombre del alimento: ");
-            alimento.setNombre(String.valueOf(menuManager.alimento.nextLine()));
+            alimento.setNombre(String.valueOf(menuManager.sc.nextLine()));
             System.out.println("Ingrese precio del alimento: ");
-            alimento.setPrecio(Integer.parseInt(menuManager.alimento.nextLine()));
+            alimento.setPrecio(Integer.parseInt(menuManager.sc.nextLine()));
             System.out.println("Ingrese el peso del alimento: ");
-            alimento.setPeso(menuManager.alimento.nextInt());
+            alimento.setPeso(menuManager.sc.nextInt());
             System.out.println("Ingrese cantidad de stock del alimento: ");
-            alimento.setCantStock(menuManager.alimento.nextInt());
+            alimento.setCantStock(menuManager.sc.nextInt());
 
             inventario.agregarAlimento(alimento);
             inventario.agregarAlInventario(alimento);
         }
 
 
+    }
+    public void listarProductos(){
+        for (Producto e:inventario.getListaProductos()){
+            System.out.println("Id: "+e.getId()+"- Nombre: "+e.getNombre()+"- Precio: "+e.getPrecio()+"- Stock: "+e.getCantStock());
+
+        }
+    }
+
+    public void buscarProducto(){
+        System.out.println("Ingrese Id del producto a buscar: ");
+        int id=sc.nextInt();
+        for (Producto e: inventario.getListaProductos()){
+            if (e.getId()==id){
+                System.out.println("*");
+                System.out.println("Id: "+e.getId()+"- Nombre: "+e.getNombre()+"- Precio: "+e.getPrecio()+"- Stock: "+e.getCantStock());
+            }
+        }
+    }
+
+    public void eliminarProducto (){
+        System.out.println("Ingrese Id del producto a eliminar: ");
+        int id=sc.nextInt();
+        for (int e=0;e<inventario.getListaProductos().size();e++){
+            if (inventario.getListaProductos().get(e).getId()==id){
+                System.out.println(inventario.getListaProductos().get(e).getId()+" eliminado");
+                inventario.eliminarDeInventario(inventario.getListaProductos().get(e));
+
+
+
+            }
+        }
     }
 }
 
