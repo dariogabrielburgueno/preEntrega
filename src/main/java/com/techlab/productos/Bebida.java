@@ -6,6 +6,7 @@ public class Bebida extends Producto{
         super(nombre,precio,cantStock);
         this.volumen=volumen;
     }
+    public Bebida(){}
 
     public int getVolumen() {
         return volumen;

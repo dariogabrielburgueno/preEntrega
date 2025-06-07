@@ -6,6 +6,9 @@ public class Alimento extends Producto{
         super(nombre,precio,cantStock);
         this.peso=peso;
     }
+    public Alimento(){
+
+    }
 
 
     public void setPeso(double peso) {
