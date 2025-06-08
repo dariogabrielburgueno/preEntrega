@@ -11,6 +11,8 @@ public class Alimento extends Producto{
     }
 
 
+
+
     public void setPeso(double peso) {
         this.peso = peso;
     }

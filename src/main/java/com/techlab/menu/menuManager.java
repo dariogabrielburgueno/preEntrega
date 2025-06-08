@@ -1,5 +1,8 @@
 package com.techlab.menu;
 
+import com.techlab.excepciones.StockInsuficienteException;
+import com.techlab.pedidos.LineaPedido;
+import com.techlab.pedidos.Pedido;
 import com.techlab.productos.Alimento;
 import com.techlab.productos.Bebida;
 import com.techlab.productos.Inventario;
@@ -12,6 +15,7 @@ public class menuManager {
 
     static Scanner sc = new Scanner(System.in);
     Inventario inventario=new Inventario();
+    Pedido pedido=new Pedido();
 
     public void empezarMenu(){
         while(true){
@@ -31,8 +35,11 @@ public class menuManager {
 
         }
     }
+
     public void mostrarMenu(){
-        System.out.println("SISTEMA DE GESTIÓN - TECHLAB");
+        String igual="=";
+        System.out.println(igual.repeat(50));
+        System.out.println(igual.repeat(10)+" SISTEMA DE GESTIÓN - TECHLAB "+igual.repeat(10));
         System.out.println("1 - Agregar producto");
         System.out.println("2 - Listar productos");
         System.out.println("3 - Buscar/Actualizar producto");
@@ -40,7 +47,10 @@ public class menuManager {
         System.out.println("5 - Crear un pedido");
         System.out.println("6 - Listar pedidos");
         System.out.println("7 - Salir");
-        System.out.println("Elija una opción: ...");
+
+        System.out.println("Elija una opción: ");
+        System.out.print("-> ");
+
     }
 
     public void interactuarMenu(int entrada){
@@ -55,16 +65,16 @@ public class menuManager {
 
                 break;
             case 4: eliminarProducto();
-                System.out.println("en proceso");
+
                 break;
-            case 5: //crearPedido();
-                System.out.println("en proceso");
+            case 5: crearPedido();
+
                 break;
-            case 6: //listarPedidos();
-                System.out.println("en proceso");
+            case 6: listarPedidos();
+
                 break;
-            case 7: //salir();
-                System.out.println("en proceso");
+            case 7: salir();
+
                 break;
             default:
                 System.out.println("Elija una opción del menú");
@@ -109,10 +119,12 @@ public class menuManager {
         }
 
 
+
     }
     public void listarProductos(){
+        System.out.println("ID ----- NOMBRE ----- PRECIO ----- CANTIDAD EN STOCK");
         for (Producto e:inventario.getListaProductos()){
-            System.out.println("Id: "+e.getId()+"- Nombre: "+e.getNombre()+"- Precio: "+e.getPrecio()+"- Stock: "+e.getCantStock());
+            System.out.println(e.getId()+"  ----- "+e.getNombre()+"  ---  "+e.getPrecio()+"   ----- "+e.getCantStock());
 
         }
     }
@@ -132,14 +144,65 @@ public class menuManager {
         System.out.println("Ingrese Id del producto a eliminar: ");
         int id=sc.nextInt();
         for (int e=0;e<inventario.getListaProductos().size();e++){
+            sc.nextLine();
             if (inventario.getListaProductos().get(e).getId()==id){
-                System.out.println(inventario.getListaProductos().get(e).getId()+" eliminado");
-                inventario.eliminarDeInventario(inventario.getListaProductos().get(e));
+                System.out.println("Ingrese Y para confirmar la eliminacion de "+id+", N para descartar");
+                String confirmar=sc.nextLine();
+                if (confirmar.toLowerCase().contains("y")){
+                    System.out.println(inventario.getListaProductos().get(e).getId()+" ha sido eliminado");
+                    inventario.eliminarDeInventario(inventario.getListaProductos().get(e));}
+                else if (confirmar.toLowerCase().contains("n")){
+                    break;
+                    }
 
 
 
             }
         }
+    }
+
+    public void crearPedido(){
+
+        while(true){
+            System.out.println("Ingrese Id del producto (o 0 para salir): ");
+            int id=sc.nextInt();
+            if(id==0){break;}
+
+            System.out.println("Ingrese cantidad a comprar: ");
+            int cant=sc.nextInt();
+
+            for (Producto e:inventario.getListaProductos()){
+                if (e.getId()==id){
+                    try {
+                        if (e.getCantStock() < cant) {
+                            throw new StockInsuficienteException("Stock insuficiente");
+
+
+                        }
+                    } catch (StockInsuficienteException ex) {
+                        System.out.println(ex.getMessage());
+                        break;
+                    }
+
+                    LineaPedido lineaPedido=new LineaPedido(e,cant );
+
+                    pedido.agregarPedido(lineaPedido);
+                    e.setCantStock(e.getCantStock()-cant);
+
+                }
+            }
+        }
+    }
+
+    public void listarPedidos (){
+        for(LineaPedido lineaPedido:pedido.getPedidoArmado()){
+            System.out.println(lineaPedido.getProducto().getNombre().toString()+""+lineaPedido.getCant());
+        }
+    }
+
+    public void salir(){
+        System.out.println("Saliendo de la aplicación ");
+        System.exit(0);
     }
 }
 
