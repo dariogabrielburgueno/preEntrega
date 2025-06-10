@@ -188,6 +188,9 @@ public class menuManager {
 
                     pedido.agregarPedido(lineaPedido);
                     e.setCantStock(e.getCantStock()-cant);
+                    System.out.println("Pedido creado: ");
+                    listarPedidos();
+
 
                 }
             }
@@ -195,9 +198,16 @@ public class menuManager {
     }
 
     public void listarPedidos (){
+        Double total=0.0;
+
         for(LineaPedido lineaPedido:pedido.getPedidoArmado()){
-            System.out.println(lineaPedido.getProducto().getNombre().toString()+""+lineaPedido.getCant());
+            System.out.println(lineaPedido.getProducto().getNombre().toString()+""+lineaPedido.getCant()+" Precio: "+lineaPedido.getProducto().getPrecio());
         }
+
+        for (LineaPedido lineaPedido:pedido.getPedidoArmado()){
+            total+=lineaPedido.getProducto().getPrecio()*lineaPedido.getCant();
+        }
+        System.out.println("Total: "+total );
     }
 
     public void salir(){

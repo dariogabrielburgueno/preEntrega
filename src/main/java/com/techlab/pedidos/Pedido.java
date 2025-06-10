@@ -26,5 +26,7 @@ public class Pedido {
         pedidoArmado.add(lineaPedido);
     }
 
-
+    public int getCant() {
+        return cant;
+    }
 }
